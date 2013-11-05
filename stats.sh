@@ -19,7 +19,7 @@ if [[ $uname == "OpenBSD" ]]; then
   }
   show_vol() {
     VOL=`mixerctl -n outputs.master | sed 's/^[0-9]*,//g'`
-  VOL=`echo $(($VOL*100/255)) | bc`
+    VOL=`echo $(($VOL*100/255)) | bc`
   }
 fi
 
