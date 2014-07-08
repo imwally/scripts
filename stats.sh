@@ -2,30 +2,37 @@
 
 uname=`uname`
 
-if [[ $uname == "Linux" ]]; then
-  show_bat() {
-    BAT=`acpi | awk '{print $5}' | head -c 5`
-  }
-  show_vol() {
-    VOL=`amixer get Master | egrep -o "[0-9]+%"`
-  }
-fi
-
-if [[ $uname == "OpenBSD" ]]; then
-  show_bat() {
-    BAT_H=$((`apm -m`/60))
-    BAT_M=$((`apm -m`%60))
-    BAT=$BAT_H:$BAT_M
-  }
-  show_vol() {
-    VOL=`mixerctl -n outputs.master | sed 's/^[0-9]*,//g'`
-    VOL=`echo $(($VOL*100/255)) | bc`
-  }
-fi
+case $uname in
+  "Linux")
+    get_battery_info() {
+      BAT_STATUS=`acpi | awk '{print $3}'`
+      BAT=`acpi | awk '{print $5}' | head -c 5`
+      if [ $BAT_STATUS = "Charging," ]; then
+        BAT="+$BAT"
+      else
+        BAT="-$BAT"
+      fi 
+    }
+    get_volume_info() {
+      VOL=`amixer get Master | grep "Left" | egrep -o "[0-9]+%"`
+    }
+  ;;
+  "OpenBSD")
+    get_battery_info() {
+      BAT_H=$((`apm -m`/60))
+      BAT_M=$((`apm -m`%60))
+      BAT=$BAT_H:$BAT_M
+    }
+    get_volume_info() {
+      VOL=`mixerctl -n outputs.master | sed 's/^[0-9]*,//g'`
+      VOL=`echo $(($VOL*100/255)) | bc`
+    }
+  ;;
+esac
 
 while true; do
-  show_bat
-  show_vol
-  echo "BAT: $BAT    VOL: $VOL%"
-  sleep 10 
+  get_battery_info
+  get_volume_info
+  echo "AC $BAT    VOL $VOL" 
+  sleep 1 
 done
