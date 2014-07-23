@@ -5,7 +5,7 @@ uname=`uname`
 case $uname in
     "Linux")
         get_battery_info() {
-            BAT_PERC=`acpi | awk '{print $4}' | cut -c 1`
+            BAT_PERC=`acpi | grep -E -o "[0-9].%" | cut -c -2`
             BAT_STATUS=`acpi | awk '{print $3}'`
             BAT=`acpi | awk '{print $5}' | head -c 5`
             
