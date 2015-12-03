@@ -5,23 +5,33 @@ uname=`uname`
 case $uname in
     "Linux")
         get_battery_info() {
-            BAT_PERC=`acpi | grep -E -o "[0-9].%" | cut -c -2`
+            BAT_PERC=`acpi | awk '{print +$4}'`
             BAT_STATUS=`acpi | awk '{print $3}'`
             BAT=`acpi | awk '{print $5}' | head -c 5`
-            
+
+	    if [ $BAT_PERC -lt 10 ]; then
+		BAT="!"
+	    fi
+	    
             if [ $BAT_STATUS = "Charging," ]; then
                 BAT="+$BAT"
-            else
-                if [ $BAT_PERC -lt 10 ]; then
-                    BAT="-$BAT !! DUDE, YOU NEED TO PLUG IN !!"
-                else
-                    BAT="-$BAT"
-                fi 
-            fi 
+            fi
+
+	    if [ $BAT_STATUS = "Full," ]; then
+		BAT="100%"
+            fi
         }
         get_volume_info() {
             VOL=`amixer get Master | grep "Left" | egrep -o "[0-9]+%"`
         }
+	new_mail() {
+	    NUM_MSG=`/bin/ls -1U ~/Mail/Inbox/new | wc -l`
+	    if [ $NUM_MSG -gt 0 ]; then
+		MAIL="MAIL $NUM_MSG"
+	    else
+		MAIL=""
+	    fi
+	}
     ;;
     "OpenBSD")
         get_battery_info() {
@@ -39,6 +49,7 @@ esac
 while true; do
     get_battery_info
     get_volume_info
-    echo "AC $BAT    VOL $VOL" 
+    new_mail
+    echo "AC $BAT    VOL $VOL    $MAIL" 
     sleep 1 
 done
