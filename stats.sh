@@ -17,7 +17,7 @@ case $uname in
                 BAT="+$BAT"
             fi
 
-	    if [ $BAT_STATUS = "Full," ]; then
+	    if [ $BAT_STATUS = "Full," ] || [ $BAT_PERC = "99" ]; then
 		BAT="100%"
             fi
         }
