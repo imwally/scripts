@@ -14,7 +14,7 @@ case $uname in
                 BAT="+$BAT"
             fi
 
-            if [ $BAT_PERC -lt 10 ] && [ $BAT_STATUS = "Discharging," ]; then
+            if [ $BAT_STATUS = "Discharging," ] && [ $BAT_PERC -lt 10 ]; then
                 BAT="!"
             fi
 
