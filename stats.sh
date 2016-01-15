@@ -9,16 +9,17 @@ case $uname in
             BAT_STATUS=`acpi | awk '{print $3}'`
             BAT=`acpi | awk '{print $5}' | head -c 5`
 
-	    if [ $BAT_PERC -lt 10 ]; then
-		BAT="!"
-	    fi
 	    
             if [ $BAT_STATUS = "Charging," ]; then
                 BAT="+$BAT"
             fi
 
-	    if [ $BAT_STATUS = "Full," ] || [ $BAT_PERC = "99" ]; then
-		BAT="100%"
+            if [ $BAT_PERC -lt 10 ] && [ $BAT_STATUS = "Discharging," ]; then
+                BAT="!"
+            fi
+
+            if [ $BAT_STATUS = "Full," ] || [ $BAT_PERC = "99" ]; then
+                BAT="100%"
             fi
         }
         get_volume_info() {
