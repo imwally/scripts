@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+# Written to run in the same directory of the .flac files.
+for FILE in *.flac; do
+    ffmpeg -i "$FILE" -q:a 0 "${FILE/.flac/.mp3}"
+done    
