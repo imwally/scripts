@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo "Checking homebrew packages..."
+brew update;
+
+echo "Checking macOS updates..."
+softwareupdate -l | tail +5
