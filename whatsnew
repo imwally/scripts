@@ -1,7 +1,19 @@
 #!/bin/sh
 
+# homebrew
 echo "Checking homebrew packages..."
-brew update;
+brew update > /dev/null;
+new_packages=$(brew outdated --quiet)
+num_packages=$(echo $new_packages | wc -l)
 
+if [ $num_packages -gt 1 ]; then
+    for package in $new_packages; do
+	echo "* $package";
+    done
+else
+    echo "No new packages available."
+fi
+
+# macOS
 echo "Checking macOS updates..."
 softwareupdate -l | tail +5
