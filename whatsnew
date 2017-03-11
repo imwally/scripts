@@ -7,12 +7,12 @@ new_packages=$(brew outdated --quiet)
 num_packages=$(echo $new_packages | wc -w)
 
 if [ $num_packages -gt 0 ]; then
-	echo "New homebrew updates:"
+	echo "New homebrew package updates:"
     for package in $new_packages; do
 	echo "   * $package";
     done
 else
-    echo "No new packages available."
+    echo "No new package updates available."
 fi
 
 # macOS
