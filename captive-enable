@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# This needs root
+defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool true
