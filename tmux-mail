@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-tmux a -t mail || new -d -s mail 'mutt'\; \
+tmux a -t mail || tmux new -d -s mail 'mutt'\; \
      new-window -d 'mailsync'\; \
      set status off\; \
      attach \;
