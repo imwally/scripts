@@ -3,8 +3,8 @@
 # homebrew
 echo "Checking homebrew packages..."
 brew update > /dev/null;
-new_packages=$(brew outdated --quiet)
-new_casks=$(brew cask outdated --quiet)
+new_packages=$(brew outdated)
+new_casks=$(brew outdated --cask)
 num_casks=$(echo $new_casks | wc -w)
 num_packages=$(echo $new_packages | wc -w)
 
